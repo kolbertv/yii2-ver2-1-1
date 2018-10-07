@@ -113,3 +113,22 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.test-about {
+
+}
+
+.goodContainer__title {
+    width: 66%;
+    height: 50px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.goodContainer__item {
+    width: 25%;
+    /*border: 1px solid green;*/
+    text-align: center;
+}
