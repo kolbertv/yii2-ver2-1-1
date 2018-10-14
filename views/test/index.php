@@ -25,4 +25,4 @@ echo \yii\helpers\VarDumper::dumpAsString($result, 5, true);
     <h1><?= $testTitle ?></h1>
 
 
-<?= \yii\widgets\DetailView::widget(['model'=>$model]) ?>
+<?//= \yii\widgets\DetailView::widget(['model'=>$model]) ?>
