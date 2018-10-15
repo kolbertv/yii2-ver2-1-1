@@ -2,7 +2,12 @@
 
 namespace app\models;
 
+use Symfony\Component\Console\Input\InputAwareInterface;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -17,17 +22,56 @@ use Yii;
  * @property int $updater_id
  * @property int $created_at
  * @property int $updated_at
+ * @property string $password
  *
  * @property Task[] $tasksCreated
  * @property Task[] $tasksUpdated
  * @property TaskUser[] $taskUsers
+ * @mixin TimestampBehavior
+ * @mixin BlameableBehavior
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     const RELATION_TASKS_CREATED = 'tasksCreated';
+
     /**
      * @inheritdoc
      */
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * @param string $authKey
+     * @return bool if auth key is valid for current user
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+//                'updatedAtAttribute'=> false
+
+            ],
+
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'creator_id',
+                'updatedByAttribute' => 'updater_id',
+
+            ],
+        ];
+    }
+
     public static function tableName()
     {
         return 'user';
@@ -39,9 +83,11 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'name', 'password_hash', 'access_token', 'auth_key', 'creator_id', 'updater_id', 'created_at', 'updated_at'], 'required'],
+            [['username', 'name', 'access_token', 'auth_key', 'creator_id', 'updater_id', 'created_at', 'updated_at'], 'required'],
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
             [['username', 'name', 'password_hash', 'access_token', 'auth_key'], 'string', 'max' => 255],
+            [['password'], 'string', 'max' => 16],
+            [['password'], 'string', 'min' => 10],
         ];
     }
 
