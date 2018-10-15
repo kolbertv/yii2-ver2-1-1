@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -123,5 +124,27 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionTest()
+    {
+
+//        $model = new User();
+//        $model->username = 'Новый юзер1';
+//        $model->name = 'Новый юзер1';
+//        $model->password_hash = '123123123';
+//        $model->creator_id = 2;
+//        $model->created_at = '123123';
+//        $model->access_token = '123123';
+//        $model->auth_key='123123';
+//        $model->updated_at = '123123';
+//        $model->updater_id = 2;
+//        $model->save();
+
+
+//        $models = User::find()->with(User::RELATION_TASKS_CREATED)->asArray()->all();
+        $models = User::find()->joinWith(User::RELATION_TASKS_CREATED)->asArray()->all();
+
+        return VarDumper::dumpAsString($models, 5, true);
     }
 }

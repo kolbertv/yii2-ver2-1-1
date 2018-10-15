@@ -24,6 +24,7 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
+    const RELATION_TASKS_CREATED = 'tasksCreated';
     /**
      * @inheritdoc
      */
