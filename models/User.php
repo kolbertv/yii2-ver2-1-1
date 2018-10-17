@@ -30,7 +30,7 @@ use yii\web\IdentityInterface;
  * @mixin TimestampBehavior
  * @mixin BlameableBehavior
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class User extends \yii\db\ActiveRecord
 {
     const RELATION_TASKS_CREATED = 'tasksCreated';
 
