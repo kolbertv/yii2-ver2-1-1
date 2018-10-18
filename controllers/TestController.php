@@ -33,7 +33,7 @@ class TestController extends Controller
 
 
 
-//        $model = User::findOne(1);
+//        $model = User::findOne();
 //
 //
 //        $result =  $model->getTasksCreated()->all();
