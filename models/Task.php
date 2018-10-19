@@ -16,7 +16,6 @@ use Yii;
  * @property int $updated_at
  *
  * @property User $creator
- * @property User $updater
  * @property TaskUser[] $taskUsers
  */
 class Task extends \yii\db\ActiveRecord
@@ -40,7 +39,6 @@ class Task extends \yii\db\ActiveRecord
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['creator_id' => 'id']],
-            [['updater_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updater_id' => 'id']],
         ];
     }
 
@@ -71,25 +69,8 @@ class Task extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdater()
-    {
-        return $this->hasOne(User::className(), ['id' => 'updater_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getTaskUsers()
     {
         return $this->hasMany(TaskUser::className(), ['task_id' => 'id']);
-    }
-
-    /**
-     * @inheritdoc
-     * @return TaskQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new TaskQuery(get_called_class());
     }
 }

@@ -4,10 +4,13 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Task;
+use app\models\search\TaskSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\TaskQuery;
+
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -35,11 +38,11 @@ class TaskController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Task::find(),
-        ]);
+        $searchModel = new TaskSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -123,5 +126,21 @@ class TaskController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionMy() {
+
+        $searchModel = new TaskSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $query = $dataProvider->query;
+        $query->byCreator(Yii::$app->user->id);
+
+
+        return $this->render('my', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
     }
 }
